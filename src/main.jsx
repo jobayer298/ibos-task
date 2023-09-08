@@ -10,6 +10,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AuthProvider from './provider/AuthProvider.jsx';
 import { Toaster } from 'react-hot-toast';
+import CreateTeam from './pages/CreateTeam.jsx';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,9 @@ const router = createBrowserRouter([
       },{
         path: "/register",
         element: <Register></Register>
+      },{
+        path: "/createTeam",
+        element: <CreateTeam></CreateTeam>
       }
     ]
   },

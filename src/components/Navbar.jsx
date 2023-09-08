@@ -13,7 +13,8 @@ const Navbar = () => {
    };
     const menu = (
       <>
-        <li><Link to="/">Home</Link></li>
+        <li><Link to="/">Create Task</Link></li>
+        <li><Link to="/createTeam">Create Team</Link></li>
       </>
     );
     return (

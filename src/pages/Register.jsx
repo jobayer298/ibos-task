@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import img from "../assets/login.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
@@ -9,8 +9,10 @@ const auth = getAuth(app);
 
 const Register = () => {
   const [error, setError] = useState("");
+  const [registeredUsers, setRegisteredUsers] = useState([]);
   const navigate = useNavigate();
   const { googleSignIn, createUser, logout } = useContext(AuthContext);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setError("");
@@ -19,11 +21,22 @@ const Register = () => {
     const photo = form.photo.value;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password, name, photo);
+    const newUser = { name, email };
     createUser(email, password)
       .then((result) => {
         console.log(result.user);
         toast.success("Registration successful");
+          const existingUsersData = localStorage.getItem("registeredUsers");
+          let existingUsers = [];
+          if (existingUsersData) {
+            existingUsers = JSON.parse(existingUsersData);
+          }
+
+          // Add the new user to the list of registered users
+          const newUser = { name, email };
+          const updatedUsers = [...existingUsers, newUser];
+          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
+
         navigate("/login");
         updateProfile(auth.currentUser, {
           displayName: name,

@@ -7,6 +7,7 @@ const Home = () => {
   const [taskList, setTaskList] = useState([]);
   const [task, setTask] = useState("");
   const [date, setDate] = useState("");
+  const [assignedTo, setAssignedTo] = useState("");
   const [priority, setPriority] = useState("low");
   const [details, setDetails] = useState("");
   const { user } = useContext(AuthContext);
@@ -14,6 +15,14 @@ const Home = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortByDate, setSortByDate] = useState("All");
   const [filterPriority, setFilterPriority] = useState("All");
+  const [registeredUsers, setRegisteredUsers] = useState([]);
+  useEffect(() => {
+    const usersData = localStorage.getItem("registeredUsers");
+    if (usersData) {
+      const parsedUsers = JSON.parse(usersData);
+      setRegisteredUsers(parsedUsers);
+    }
+  }, []);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -62,6 +71,7 @@ const Home = () => {
         date,
         priority,
         details,
+        assignedTo,
         completed: "Pending", // Set the default status to "Pending"
       };
       setTaskList([...taskList, newTask]);
@@ -70,6 +80,7 @@ const Home = () => {
       setDate("");
       setPriority("low");
       setDetails("");
+      setAssignedTo("");
     } else {
       toast.error("You need to login first");
       navigate("/login");
@@ -110,6 +121,21 @@ const Home = () => {
           <option value="low">Low</option>
           <option value="Medium">Medium</option>
           <option value="High">High</option>
+        </select>
+        <select
+          value={assignedTo} // Set the value to the state
+          onChange={(e) => setAssignedTo(e.target.value)}
+          required
+          className="select select-bordered w-full mt-2"
+        >
+          <option disabled selected value="Assigned To">
+            Assigned to
+          </option>
+          {registeredUsers.map((user, index) => (
+            <option key={index} value={user.name}>
+              {user.name}
+            </option>
+          ))}
         </select>
         <textarea
           required
@@ -166,6 +192,7 @@ const Home = () => {
               <th>Date</th>
               <th>Priority</th>
               <th>Details</th>
+              <th>Assigned to</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -203,6 +230,7 @@ const Home = () => {
                     <td>{task.date}</td>
                     <td>{task.priority}</td>
                     <td>{task.details}</td>
+                    <td>{task.assignedTo}</td>
                     <td>
                       <button
                         onClick={() => toggleTaskCompletion(index)}

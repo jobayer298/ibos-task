@@ -67,11 +67,11 @@ const Login = () => {
               </p>
               <div className="divider">Or login with</div>
             </form>
-            <div className="text-center mb-5">
+            {/* <div className="text-center mb-5">
               <button className="btn btn-circle btn-primary btn-outline">
                 G
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
